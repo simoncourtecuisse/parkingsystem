@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ParkingSpotTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">parking-system (26 nov. 2020 18:55:58)</a> &gt; <a href="../../index.html" class="el_group">parking-system</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.parkit.parkingsystem</a> &gt; <span class="el_source">ParkingSpotTest.java</span></div><h1>ParkingSpotTest.java</h1><pre class="source lang-java linenums">package com.parkit.parkingsystem;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
+import com.parkit.parkingsystem.constants.ParkingType;
+import com.parkit.parkingsystem.model.ParkingSpot;
+
+<span class="fc" id="L13">public class ParkingSpotTest {</span>
+
+	@Test
+	public void getId() {
+<span class="fc" id="L17">		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);</span>
+<span class="fc" id="L18">		assertEquals(1, parkingSpot.getId());</span>
+<span class="fc" id="L19">	}</span>
+
+	@Test
+	public void setId() {
+<span class="fc" id="L23">		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);</span>
+<span class="fc" id="L24">		parkingSpot.setId(111);</span>
+<span class="fc" id="L25">		assertEquals(111, parkingSpot.getId());</span>
+<span class="fc" id="L26">	}</span>
+
+	@Test
+	public void getParkingType() {
+<span class="fc" id="L30">		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);</span>
+<span class="fc" id="L31">		assertEquals(ParkingType.CAR, parkingSpot.getParkingType());</span>
+<span class="fc" id="L32">	}</span>
+
+	@Test
+	public void setParkingType() {
+<span class="fc" id="L36">		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);</span>
+<span class="fc" id="L37">		parkingSpot.setParkingType(ParkingType.BIKE);</span>
+<span class="fc" id="L38">		assertEquals(ParkingType.BIKE, parkingSpot.getParkingType());</span>
+<span class="fc" id="L39">	}</span>
+
+	@Test
+	public void isAvailable() {
+<span class="fc" id="L43">		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);</span>
+<span class="fc" id="L44">		assertTrue(parkingSpot.isAvailable());</span>
+<span class="fc" id="L45">	}</span>
+
+	@Test
+	public void setAvailable() {
+<span class="fc" id="L49">		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);</span>
+<span class="fc" id="L50">		parkingSpot.setAvailable(false);</span>
+<span class="fc" id="L51">		assertFalse(parkingSpot.isAvailable());</span>
+<span class="fc" id="L52">	}</span>
+
+	@Test
+	public void equalsTrue() {
+<span class="fc" id="L56">		ParkingSpot parkingSpot1 = new ParkingSpot(1, ParkingType.CAR, false);</span>
+<span class="fc" id="L57">		assertEquals(parkingSpot1, parkingSpot1);</span>
+<span class="fc" id="L58">	}</span>
+
+	@Test
+	public void equalsFalse1() {
+<span class="fc" id="L62">		ParkingSpot parkingSpot1 = new ParkingSpot(1, ParkingType.CAR, false);</span>
+<span class="fc" id="L63">		Object obj = new Object();</span>
+<span class="fc" id="L64">		assertNotEquals(parkingSpot1, obj);</span>
+<span class="fc" id="L65">	}</span>
+
+	@Test
+	public void equalsFalse2() {
+<span class="fc" id="L69">		ParkingSpot parkingSpot1 = new ParkingSpot(1, ParkingType.CAR, false);</span>
+<span class="fc" id="L70">		ParkingSpot parkingSpot2 = new ParkingSpot(2, ParkingType.CAR, false);</span>
+<span class="fc" id="L71">		assertNotEquals(parkingSpot1, parkingSpot2);</span>
+<span class="fc" id="L72">	}</span>
+
+	@Test
+	public void hashCodeTest() {
+<span class="fc" id="L76">		ParkingSpot parkingSpot1 = new ParkingSpot(1, ParkingType.CAR, false);</span>
+<span class="fc" id="L77">		ParkingSpot parkingSpot2 = new ParkingSpot(1, ParkingType.CAR, false);</span>
+<span class="pc bpc" id="L78" title="2 of 4 branches missed.">		assertTrue(parkingSpot1.equals(parkingSpot2) &amp;&amp; parkingSpot2.equals(parkingSpot1));</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">		assertTrue(parkingSpot1.hashCode() == parkingSpot2.hashCode());</span>
+<span class="fc" id="L80">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>parking-system (26 nov. 2020 18:55:58)</div></body></html>

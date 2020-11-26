@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>InputReaderUtilTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">parking-system (26 nov. 2020 18:55:58)</a> &gt; <a href="../../index.html" class="el_group">parking-system</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.parkit.parkingsystem.util</a> &gt; <span class="el_source">InputReaderUtilTest.java</span></div><h1>InputReaderUtilTest.java</h1><pre class="source lang-java linenums">package com.parkit.parkingsystem.util;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.ByteArrayInputStream;
+import java.util.Scanner;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+<span class="fc" id="L12">public class InputReaderUtilTest {</span>
+
+	private static InputReaderUtil inputReaderUtil;
+
+	@BeforeEach
+	private void setUpPerTest() {
+<span class="fc" id="L18">		inputReaderUtil = new InputReaderUtil();</span>
+<span class="fc" id="L19">	}</span>
+
+	@Test
+	public void readSelectionTestOK() {
+<span class="fc" id="L23">		ByteArrayInputStream input = new ByteArrayInputStream(&quot;1\n&quot;.getBytes());</span>
+
+<span class="fc" id="L25">		Scanner scan = new Scanner(input);</span>
+<span class="fc" id="L26">		inputReaderUtil.setScan(scan);</span>
+
+<span class="fc" id="L28">		assertEquals(inputReaderUtil.readSelection(), 1);</span>
+<span class="fc" id="L29">	}</span>
+
+	@Test
+
+	public void readSelectionTestKO() {
+
+<span class="fc" id="L35">		ByteArrayInputStream input = new ByteArrayInputStream(&quot;Bonjour\n&quot;.getBytes());</span>
+
+<span class="fc" id="L37">		Scanner scan = new Scanner(input);</span>
+<span class="fc" id="L38">		inputReaderUtil.setScan(scan);</span>
+
+<span class="fc" id="L40">		assertEquals(inputReaderUtil.readSelection(), -1);</span>
+<span class="fc" id="L41">	}</span>
+
+	@Test
+	public void readVehicleNumberTest() throws Exception {
+<span class="fc" id="L45">		ByteArrayInputStream input = new ByteArrayInputStream(&quot;123\n&quot;.getBytes());</span>
+<span class="fc" id="L46">		Scanner scan = new Scanner(input);</span>
+<span class="fc" id="L47">		inputReaderUtil.setScan(scan);</span>
+
+<span class="fc" id="L49">		assertEquals(inputReaderUtil.readVehicleRegistrationNumber(), &quot;123&quot;);</span>
+
+<span class="fc" id="L51">	}</span>
+
+	@Test
+	public void readVehicleNumberTestException() {
+
+<span class="fc" id="L56">		ByteArrayInputStream input = new ByteArrayInputStream(&quot;\n&quot;.getBytes());</span>
+<span class="fc" id="L57">		Scanner scan = new Scanner(input);</span>
+<span class="fc" id="L58">		inputReaderUtil.setScan(scan);</span>
+<span class="pc" id="L59">		assertThrows(IllegalArgumentException.class, () -&gt; inputReaderUtil.readVehicleRegistrationNumber());</span>
+		// assertThrows()(inputReaderUtil.readVehicleRegistrationNumber().trim().length(
+		// ), 0));
+
+<span class="fc" id="L63">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>parking-system (26 nov. 2020 18:55:58)</div></body></html>
