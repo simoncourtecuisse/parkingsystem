@@ -22,23 +22,25 @@ public class TicketDAO {
 
 	public boolean saveTicket(Ticket ticket) {
 		Connection con = null;
+		PreparedStatement ps = null;
 		try {
 			con = dataBaseConfig.getConnection();
-			PreparedStatement ps = con.prepareStatement(DBConstants.SAVE_TICKET);
+			ps = con.prepareStatement(DBConstants.SAVE_TICKET);
 			// ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
 			// ps.setInt(1,ticket.getId());
 			ps.setInt(1, ticket.getParkingSpot().getId());
 			ps.setString(2, ticket.getVehicleRegNumber());
 			ps.setDouble(3, ticket.getPrice());
 			ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
-			ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
+			ps.setTimestamp(5, (Timestamp) ticket.getOutTime());
+			dataBaseConfig.closePreparedStatement(ps);
 			return ps.execute();
 		} catch (Exception ex) {
 			logger.error("Error fetching next available slot", ex);
 		} finally {
 			dataBaseConfig.closeConnection(con);
-			return false;
 		}
+		return false;
 	}
 
 	/*
@@ -57,8 +59,8 @@ public class TicketDAO {
 		boolean checkDiscount = false;
 		try {
 			Connection con = dataBaseConfig.getConnection();
-			PreparedStatement st = con.prepareStatement(DBConstants.DISCOUNT_TICKET);
-			ResultSet rs = st.executeQuery();
+			PreparedStatement ps = con.prepareStatement(DBConstants.DISCOUNT_TICKET);
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				int occurenceNumber = rs.getInt("COUNT");
 				if (occurenceNumber > 1) {
@@ -66,8 +68,11 @@ public class TicketDAO {
 				}
 
 			}
-		} catch (Exception e) {
+			dataBaseConfig.closePreparedStatement(ps);
+		} catch (Exception ex) {
+			logger.error("Error fetching next available slot", ex);
 		} finally {
+
 		}
 		return checkDiscount;
 	}
@@ -97,8 +102,8 @@ public class TicketDAO {
 			logger.error("Error fetching next available slot", ex);
 		} finally {
 			dataBaseConfig.closeConnection(con);
-			return ticket;
 		}
+		return ticket;
 	}
 
 	public boolean updateTicket(Ticket ticket) {
@@ -110,6 +115,7 @@ public class TicketDAO {
 			ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
 			ps.setInt(3, ticket.getId());
 			ps.execute();
+			dataBaseConfig.closePreparedStatement(ps);
 			return true;
 		} catch (Exception ex) {
 			logger.error("Error saving ticket info", ex);
