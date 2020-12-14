@@ -2,7 +2,6 @@ package com.parkit.parkingsystem.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.AfterAll;
@@ -60,9 +59,8 @@ public class ParkingDataBaseIT {
 		// TODO: check that a ticket is actualy saved in DB and Parking table is updated
 		// with availability
 		String vehiculeNumber = inputReaderUtil.readVehicleRegistrationNumber();
-		Ticket ticket = ticketDAO.getTicket(vehiculeNumber);
-		assertNotNull(ticket);
-		assertEquals(false, ticket.getParkingSpot().isAvailable());
+		assertEquals(vehiculeNumber, ticketDAO.getTicket(vehiculeNumber).getVehicleRegNumber());
+		assertEquals(false, ticketDAO.getTicket(vehiculeNumber).getParkingSpot().isAvailable());
 
 	}
 

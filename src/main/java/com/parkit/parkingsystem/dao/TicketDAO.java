@@ -33,12 +33,13 @@ public class TicketDAO {
 			ps.setDouble(3, ticket.getPrice());
 			ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
 			ps.setTimestamp(5, (Timestamp) ticket.getOutTime());
-			dataBaseConfig.closePreparedStatement(ps);
+
 			return ps.execute();
 		} catch (Exception ex) {
 			logger.error("Error fetching next available slot", ex);
 		} finally {
 			dataBaseConfig.closeConnection(con);
+			dataBaseConfig.closePreparedStatement(ps);
 		}
 		return false;
 	}
@@ -60,6 +61,7 @@ public class TicketDAO {
 		try {
 			Connection con = dataBaseConfig.getConnection();
 			PreparedStatement ps = con.prepareStatement(DBConstants.DISCOUNT_TICKET);
+			ps.setString(1, vehicleRegNumber);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				int occurenceNumber = rs.getInt("COUNT");
