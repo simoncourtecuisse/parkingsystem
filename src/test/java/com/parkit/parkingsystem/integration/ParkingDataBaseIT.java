@@ -1,7 +1,7 @@
 package com.parkit.parkingsystem.integration;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.AfterAll;
@@ -17,6 +17,7 @@ import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
 import com.parkit.parkingsystem.integration.service.DataBasePrepareService;
 import com.parkit.parkingsystem.model.Ticket;
+import com.parkit.parkingsystem.service.FareCalculatorService;
 import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 
@@ -27,6 +28,7 @@ public class ParkingDataBaseIT {
 	private static ParkingSpotDAO parkingSpotDAO;
 	private static TicketDAO ticketDAO;
 	private static DataBasePrepareService dataBasePrepareService;
+	private static FareCalculatorService fareCalculatorService;
 
 	@Mock
 	private static InputReaderUtil inputReaderUtil;
@@ -38,6 +40,7 @@ public class ParkingDataBaseIT {
 		ticketDAO = new TicketDAO();
 		ticketDAO.dataBaseConfig = dataBaseTestConfig;
 		dataBasePrepareService = new DataBasePrepareService();
+		fareCalculatorService = new FareCalculatorService();
 	}
 
 	@BeforeEach
@@ -67,14 +70,20 @@ public class ParkingDataBaseIT {
 	@Test
 	public void testParkingLotExit() throws Exception {
 		testParkingACar();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		parkingService.processExitingVehicle();
 		// TODO: check that the fare generated and out time are populated correctly in
 		// the database
 		String vehiculeNumber = inputReaderUtil.readVehicleRegistrationNumber();
 		Ticket ticket = ticketDAO.getTicket(vehiculeNumber);
-		assertNotEquals(0.00000045, ticket.getPrice());
-		// assertNotNull(ticket.getOutTime());
+		fareCalculatorService.calculateFare(ticket, false);
+		assertEquals(ticketDAO.getTicket(vehiculeNumber).getPrice(), ticket.getPrice());
+		assertNotNull(ticket.getOutTime());
 
 	}
 
